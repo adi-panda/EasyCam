@@ -1,22 +1,21 @@
-import { message } from "./another";
-
 (function testScript() {
   const comp = app.project.activeItem;
   app.beginUndoGroup("Test Script");
-  alert(message);
-  if (!(comp && comp instanceof CompItem)) {
-    alert("Open a comp!");
+  if(comp == null){
+    alert("Please select a composition");
+    return;                                               
+  }
+  if (!(comp instanceof CompItem)) {
+    alert("Please select a composition");
     return;
   }
 
-  const layer = comp.selectedLayers[0];
 
-  if (!layer) {
-    alert("No layer selected");
-    return;
-  }
+  const cam = comp.layers.addCamera("Camera", [0, 0]);
+  const camController = comp.layers.addNull();
+  camController.name = "CamController";
+  cam.setParentWithJump(camController);
 
-  alert("You selected: " + layer.name);
-
+  
   app.endUndoGroup();
 })();
